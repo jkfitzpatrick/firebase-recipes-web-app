@@ -20,6 +20,29 @@ function LoginForm({ existingUser }) {
   function handleLougout() {
     firebaseAuthService.logoutUser();
   }
+
+  async function handleSendResetPasswordEmail() {
+    if (!username) {
+      alert("Missing username!");
+      return;
+    }
+
+    try {
+      await firebaseAuthService.sendPasswordResetEmail(username);
+      alert("Sent password reset email");
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  // async function handleLoginWithGoogle() {
+  //   try {
+  //     await firebaseAuthService.loginWithGoogle();
+  //   } catch (error) {
+  //     alert(error.message);
+  //   }
+  // }
+
   return (
     <div className="login-form-container">
       {existingUser ? (
@@ -56,7 +79,21 @@ function LoginForm({ existingUser }) {
             />
           </label>
           <div className="button-box">
-            <button className="primary-button">Submit</button>
+            <button className="primary-button">Login</button>
+            <button
+              type="button"
+              onClick={handleSendResetPasswordEmail}
+              className="primary-button"
+            >
+              Reset Password
+            </button>
+            {/* <button
+              type="button"
+              onClick={handleLoginWithGoogle}
+              className="primary-button"
+            >
+              Login with Google
+            </button> */}
           </div>
         </form>
       )}
